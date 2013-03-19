@@ -26,7 +26,8 @@ public class Main
 	/**
 	 * Application's main entry point
 	 * 
-	 * @param args Command-line arguments (none supported for the moment)
+	 * @param args
+	 *            Command-line arguments (none supported for the moment)
 	 */
 	public static void main(String[] args)
 	{
