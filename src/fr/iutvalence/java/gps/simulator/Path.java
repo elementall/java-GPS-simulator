@@ -4,10 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This class represents a path, in other words an ordered list of timestamped location.
+ * This class represents a path, in other words an ordered list of timestamped
+ * location.
  * 
  * @author sebastienjean
- *
+ * 
  */
 public class Path
 {
@@ -15,71 +16,148 @@ public class Path
 	 * Ordered list of timestamped locations.
 	 */
 	private final List<TimestampedLocation> waypoints;
-	
+
+	/**
+	 * Creates a new empty path.
+	 */
 	public Path()
 	{
 		this.waypoints = new LinkedList<TimestampedLocation>();
 	}
-	
+
+	/**
+	 * Getter for waypoints count.
+	 * 
+	 * @return waypoints count
+	 */
 	public int getPathWaypointsCount()
 	{
 		return this.waypoints.size();
 	}
-	
+
+	/**
+	 * Getter for path first waypoint.
+	 * 
+	 * @return path first waypoint (<tt>null</tt> when path is empty)
+	 */
 	public TimestampedLocation getStart()
 	{
 		return this.waypoints.get(0);
 	}
-	
+
+	/**
+	 * Getter for path last waypoint.
+	 * 
+	 * @return path last waypoint (<tt>null</tt> when path is empty)
+	 */
 	public TimestampedLocation getFinish()
 	{
-		return this.waypoints.get(this.waypoints.size()-1);
+		return this.waypoints.get(this.waypoints.size() - 1);
 	}
-	
-	public void addWaypoint(TimestampedLocation waypoint) throws BackToTheFutureException
+
+	/**
+	 * Appends a waypoint to the path
+	 * 
+	 * @param waypoint
+	 *            the waypoint to append
+	 * @throws BackToTheFutureException
+	 *             is the date of the waypoint to be added to the path is back
+	 *             in time with regards to the last waypoint (a null waypoint is
+	 *             also considered as back in time)
+	 */
+	public void addWaypoint(TimestampedLocation waypoint)
+			throws BackToTheFutureException
 	{
 		TimestampedLocation last = this.getFinish();
-		
-		if ((waypoint == null)||((last != null)&&(last.getDate().compareTo(waypoint.getDate()) >= 0)))
+
+		if ((waypoint == null)
+				|| ((last != null) && (last.getDate().compareTo(
+						waypoint.getDate()) >= 0)))
 			throw new BackToTheFutureException();
-		
-		this.waypoints.add(waypoint);	
+
+		this.waypoints.add(waypoint);
 	}
-	
+
+	/**
+	 * Removes the waypoint at a given offset. Does nothing if the offset is not
+	 * valid (i.e. not in [0, getPathWaypointsCount[ ).
+	 * 
+	 * @param offset
+	 *            the offset of the waypoint to remove
+	 */
 	public void removeWaypoint(int offset)
 	{
 		this.waypoints.remove(offset);
 	}
-	
+
+	/**
+	 * Getter for the waypoint at a given offset.
+	 * 
+	 * @param offset
+	 *            the offset of the waypoint to retrieve
+	 * @return the waypoint at offset <tt>offset</tt> in the path, <tt>null</tt>
+	 *         if the offset is not valid (i.e. not in [0,
+	 *         getPathWaypointsCount[ )
+	 */
 	public TimestampedLocation getWaypoint(int offset)
 	{
 		return this.waypoints.get(offset);
 	}
 
+	/**
+	 * Getter for path duration (in milliseconds)
+	 * 
+	 * @return path duration (in milliseconds)
+	 */
 	public long getDuration()
 	{
-		return this.getFinish().getDate().getTimeInMillis() - this.getStart().getDate().getTimeInMillis();
+		return this.getFinish().getDate().getTimeInMillis()
+				- this.getStart().getDate().getTimeInMillis();
 	}
-	
-	public long get3DLength()
+
+	/**
+	 * Getter for path "true" (considering 3 dimensions) length (in meters), i.e
+	 * the sum of each segment (3D) length.
+	 * 
+	 * @return path length (3D) in meters
+	 */
+	public long getTrueLength()
 	{
 		// TODO replace this mock implementation
 		return 1000;
 	}
-	
-	public long get2DLength()
+
+	/**
+	 * Getter for path "over ground" (not considering altitude) length (in
+	 * meters), i.e the sum of each segment (2D) length.
+	 * 
+	 * @return path length (2D) in meters
+	 */
+	public long getOverGroundLength()
 	{
 		// TODO replace this mock implementation
 		return 500;
 	}
-	
-	public double getAverageTrueSpeed()
+
+	/**
+	 * Getter for path "true" (considering 3 dimensions) average speed (in
+	 * km/h).
+	 * 
+	 * @return path "true" average speed in km/h
+	 */
+	public double getTrueAverageSpeed()
 	{
-		return this.get3DLength() / this.getDuration();
+		return this.getTrueLength() / this.getDuration();
 	}
-	
-	public double getAverageSpeedOverGround()
+
+	/**
+	 * Getter for path "over ground" (not considering altitude) average speed
+	 * (in km/h).
+	 * 
+	 * @return path "over ground" average speed in km/h
+	 */
+	public double getOverGroundAverageSpeed()
 	{
-		return this.get2DLength() / this.getDuration();
+		return this.getOverGroundLength() / this.getDuration();
 	}
 }

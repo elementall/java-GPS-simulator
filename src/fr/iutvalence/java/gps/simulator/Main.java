@@ -22,7 +22,6 @@ package fr.iutvalence.java.gps.simulator;
  */
 public class Main
 {
-
 	/**
 	 * Application's main entry point
 	 * 
@@ -34,5 +33,4 @@ public class Main
 		// TODO TBD ;-)
 
 	}
-
 }
