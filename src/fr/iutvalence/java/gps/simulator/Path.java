@@ -61,7 +61,7 @@ public class Path
 	 * @param waypoint
 	 *            the waypoint to append
 	 * @throws BackToTheFutureException
-	 *             is the date of the waypoint to be added to the path is back
+	 *             if the date of the waypoint to be added to the path is back
 	 *             in time with regards to the last waypoint (a null waypoint is
 	 *             also considered as back in time)
 	 */
@@ -123,8 +123,14 @@ public class Path
 	 */
 	public long getTrueLength()
 	{
-		// TODO replace this mock implementation
-		return 1000;
+		long trueLength = 0;
+		for (int i=1;i<this.waypoints.size();i++)
+		{
+			Location start = this.waypoints.get(i-1).getLocation();
+			Location end = this.waypoints.get(i).getLocation();
+			trueLength += start.get3DDistance(end);
+		}
+		return trueLength;
 	}
 
 	/**
@@ -135,8 +141,14 @@ public class Path
 	 */
 	public long getOverGroundLength()
 	{
-		// TODO replace this mock implementation
-		return 500;
+		long overGroungLength = 0;
+		for (int i=1;i<this.waypoints.size();i++)
+		{
+			Location start = this.waypoints.get(i-1).getLocation();
+			Location end = this.waypoints.get(i).getLocation();
+			overGroungLength += start.getOverGroundDistance(end);
+		}
+		return overGroungLength;
 	}
 
 	/**
