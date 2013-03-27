@@ -69,4 +69,24 @@ public class TimestampedLocation
 	{
 		return this.location;
 	}
+	
+	/**
+	 * Getter for the duration between this waypoint and a destination waypoint, in milliseconds
+	 * @param destination destination waypoint
+	 * @return duration between this waypoint and a destination waypoint, in milliseconds
+	 * @throws BackToTheFutureException  if the date of the destination waypoint is back
+	 *             in time with regards to this waypoint (a null waypoint is
+	 *             also considered as back in time)
+	 */
+	public long getDurationMillis(TimestampedLocation destination) throws BackToTheFutureException
+	{
+		if (destination == null) throw new BackToTheFutureException();
+		
+		long millis =  destination.date.getTimeInMillis() - this.date.getTimeInMillis();
+		
+		if (millis < 0) throw new BackToTheFutureException();
+		
+		return millis;
+	}
+	 
 }
